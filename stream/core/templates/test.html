@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peza - Find Destinations & Events</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #EAF4F2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    button, input {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      padding: 30px 0;
+      background-color: #EAF4F2;
+    }
+
+    .device {
+      display: flex;
+      flex-direction: column;
+     
+      height: 736px;
+      box-shadow: 0 0 20px 1px rgba(0, 0, 0, .2);
+      border-radius: 30px;
+      background-color: #FFF;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 40px 20px 20px;
+    }
+
+    .left-side {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .left-side h1 {
+      font-size: 20px;
+      color: #58907D;
+      margin: 0 0 10px;
+      padding: 0;
+    }
+
+    .left-side span {
+      font-size: 14px;
+      color: #959595;
+    }
+
+    .avatar {
+      margin-left: auto;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: url(https://images.unsplash.com/photo-1591084728795-1149f32d9866?auto=format&fit=crop&w=1000&q=80) no-repeat center;
+      background-size: cover;
+    }
+
+    .searchbox {
+      margin: 0 20px;
+      padding: 10px 20px 10px 50px;
+      border-radius: 14px;
+      background: #F3F3F3 url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHBhdGggZmlsbD0iI2Q0ZDRkNCIgZD0iTTIyNS43NzMsMC42MTZDMTAxLjI4MywwLjYxNiwwLDEwMS42MjIsMCwyMjUuNzczczEwMS4yODQsMjI1LjE1NywyMjUuNzczLDIyNS4xNTdzMjI1Ljc3NC0xMDEuMDA2LDIyNS43NzQtMjI1LjE1N1MzNTAuMjYzLDAuNjE2LDIyNS43NzMsMC42MTZ6IE0yMjUuNzczLDQxMy45MTdjLTEwNC4wODQsMC0xODguNzYxLTg0LjQwNi0xODguNzYxLTE4OC4xNDUgICAgYzAtMTAzLjc0NSw4NC42NzctMTg4LjE0NSwxODguNzYxLTE4OC4xNDVzMTg4Ljc2MSw4NC40LDE4OC43NjEsMTg4LjE0NUM0MTQuNTM1LDMyOS41MTEsMzI5Ljg1OCw0MTMuOTE3LDIyNS43NzMsNDEzLjkxN3oiLz48cGF0aCBkPSJNNTA2LjU0Nyw0NzkuNzU2TDM4NS4wMjQsMzU4Ljg1Yy03LjI0OC03LjIwNS0xOC45NjMtNy4xNzQtMjYuMTc0LDAuMDY4Yy03LjIwNSw3LjI0OC03LjE3NCwxOC45NjIsMC4wNjgsMjYuMTc0ICAgIGwxMjEuNTIzLDEyMC45MDZjMy42MTUsMy41OSw4LjMyOCw1LjM4NSwxMy4wNTMsNS4zODVjNC43NTYsMCw5LjUwNi0xLjgyLDEzLjEyMS01LjQ1MyAgICBDNTEzLjgyLDQ5OC42ODEsNTEzLjc4OSw0ODYuOTY3LDUwNi41NDcsNDc5Ljc1NnoiIGZpbGw9IiNkNGQ0ZDQiLz48L3N2Zz4=) no-repeat 20px center;
+      background-size: 20px;
+    }
+
+    .searchbox input {
+      width: 100%;
+      border: 0;
+      background-color: transparent;
+      font-size: 14px;
+      color: #000;
+      outline: none;
+      opacity: 0.4;
+    }
+
+    .filters {
+      display: flex;
+      list-style-type: none;
+      padding: 0 20px;
+      margin: 20px 0 0;
+      white-space: nowrap;
+      overflow: auto;
+    }
+
+    .filters li {
+      margin-right: 15px;
+      background-color: #F3F3F3;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 14px;
+      color: #959595;
+      cursor: pointer;
+      transition: all .3s ease-out;
+    }
+
+    .filters li:last-child {
+      margin-right: 0;
+    }
+
+    .filters li:hover {
+      background-color: #EAEFE7;
+      color: #58907D;
+    }
+
+    .filters li.active {
+      background-color: #EAEFE7;
+      color: #58907D;
+      font-weight: 600;
+      cursor: default;
+    }
+
+    .content {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .destination, .event {
+      border-radius: 20px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .destination .overlay, .event .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(0, 0, 0, 0.5);
+      transition: all .3s ease-out;
+    }
+
+    .destination:hover .overlay, .event:hover .overlay {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .destination.first {
+      background-image: url(https://images.unsplash.com/photo-1580391529235-d163e8d017cb?auto=format&fit=crop&w=1635&q=80);
+    }
+
+    .destination.second {
+      background-image: url(https://images.unsplash.com/photo-1547486656-8b4cd5e698e9?auto=format&fit=crop&w=1950&q=80);
+    }
+
+    .event.first {
+      background-image: url(https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1635&q=80);
+    }
+
+    .event.second {
+      background-image: url(https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1635&q=80);
+    }
+
+    .content-header {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .content-header span {
+      font-size: 14px;
+      color: #FFFFFF;
+    }
+
+    .rating {
+      margin-left: auto;
+      color: #FFFFFF;
+      font-size: 14px;
+      padding-left: 24px;
+      background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0ibTExNC41OTM3NSA0OTEuMTQwNjI1Yy01LjYwOTM3NSAwLTExLjE3OTY4OC0xLjc1LTE1LjkzMzU5NC01LjE4NzUtOC44NTU0NjgtNi40MTc5NjktMTIuOTkyMTg3LTE3LjQ0OTIxOS0xMC41ODIwMzEtMjguMDkzNzVsMzIuOTM3NS0xNDUuMDg5ODQ0LTExMS43MDMxMjUtOTcuOTYwOTM3Yy04LjIxMDkzOC03LjE2Nzk2OS0xMS4zNDc2NTYtMTguNTE5NTMyLTcuOTc2NTYyLTI4LjkwNjI1IDMuMzcxMDkzLTEwLjM2NzE4OCAxMi41NDI5NjgtMTcuNzA3MDMyIDIzLjQwMjM0My0xOC43MTA5MzhsMTQ3Ljc5Njg3NS0xMy40MTc5NjggNTguNDMzNTk0LTEzNi43NDYwOTRjNC4zMDg1OTQtMTAuMDQ2ODc1IDE0LjEyMTA5NC0xNi41MzUxNTYgMjUuMDIzNDM4LTE2LjUzNTE1NiAxMC45MDIzNDMgMCAyMC43MTQ4NDMgNi40ODgyODEgMjUuMDIzNDM3IDE2LjUxMTcxOGw1OC40MzM1OTQgMTM2Ljc2OTUzMiAxNDcuNzczNDM3IDEzLjQxNzk2OGMxMC44ODI4MTMuOTgwNDY5IDIwLjA1NDY4OCA4LjM0Mzc1IDIzLjQyNTc4MiAxOC43MTA5MzggMy4zNzEwOTMgMTAuMzY3MTg3LjI1MzkwNiAyMS43MzgyODEtNy45NTcwMzIgMjguOTA2MjVsLTExMS43MDMxMjUgOTcuOTQxNDA2IDMyLjkzNzUgMTQ1LjA4NTkzOGMyLjQxNDA2MyAxMC42Njc5NjgtMS43MjY1NjIgMjEuNjk5MjE4LTEwLjU3ODEyNSAyOC4wOTc2NTYtOC44MzIwMzEgNi4zOTg0MzctMjAuNjA5Mzc1IDYuODkwNjI1LTI5LjkxMDE1NiAxLjMwMDc4MWwtMTI3LjQ0NTMxMi03Ni4xNjAxNTYtMTI3LjQ0NTMxMyA3Ni4yMDMxMjVjLTQuMzA4NTk0IDIuNTU4NTk0LTkuMTA5Mzc1IDMuODYzMjgxLTEzLjk1MzEyNSAzLjg2MzI4MXoiLz48L3N2Zz4=) no-repeat left 2px;
+      background-size: 14px;
+    }
+
+    .content-info {
+      display: flex;
+      flex-direction: column;
+      margin-top: auto;
+      padding: 20px;
+    }
+
+    .content-info span {
+      color: #FFFFFF;
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .content-info .details {
+      color: #FFFFFF;
+      font-size: 14px;
+      padding-left: 24px;
+      background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTM0Ny4yMTYsMzAxLjIxMWwtNzEuMzg3LTUzLjU0VjEzOC42MDljMC0xMC45NjYtOC44NjQtMTkuODMtMTkuODMtMTkuODNjLTEwLjk2NiwwLTE5LjgzLDguODY0LTE5LjgzLDE5LjgzdjExOC45NzggICAgYzAsNi4yNDYsMi45MzUsMTIuMTM2LDcuOTMyLDE1Ljg2NGw3OS4zMTgsNTkuNDg5YzMuNTY5LDIuNjc3LDcuNzM0LDMuOTY2LDExLjg3OCwzLjk2NmM2LjA0OCwwLDExLjk5Ny0yLjcxNywxNS44ODQtNy45NTIgICAgQzM1Ny43NjYsMzIwLjIwOCwzNTUuOTgxLDMwNy43NzUsMzQ3LjIxNiwzMDEuMjExeiIvPjxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Ik0yNTYsMGMxMTQuODMzLDAsMCwxMTQuODMzLDAsMjU2czExNC44MzMsMjU2LDI1NiwyNTZzMjU2LTExNC44MzMsMjU2LTI1NlMzOTcuMTY3LDAsMjU2LDB6IE0yNTYsNDcyLjM0MSAgICBjLTExOS4yNzUsMC0yMTYuMzQxLTk3LjA2Ni0yMTYuMzQxLTIxNi4zNDFTMzYuNzI1LDM5LjY1OSwyNTYsMzkuNjU5YzExOS4yOTUsMCwyMTYuMzQxLDk3LjA2NiwyMTYuMzQxLDIxNi4zNDEgICAgUzM3NS4yNzUsNDcyLjM0MSwyNTYsNDcyLjM0MXoiLz48L3N2Zz4=) no-repeat left 2px;
+      background-size: 14px;
+    }
+
+    .tabbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    .tabbar button {
+      border: 0;
+      background-color: transparent;
+      background-position: center top;
+      background-size: 20px;
+      background-repeat: no-repeat;
+      flex: 1;
+      color: #C6C6C6;
+      cursor: pointer;
+      padding-top: 25px;
+      transition: all .3s ease-out;
+    }
+
+    .tabbar button:hover {
+      opacity: 0.8;
+    }
+
+    .tabbar button.active {
+      color: #58907D;
+    }
+
+    .tabbar button.home {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHBhdGggZmlsbD0iIzU4OTA3ZCIgZD0ibTUwMy44NzEwOTQgMjMxLjQzMzU5NC0yMzYuODAwNzgyLTIyNi45ODQzNzVjLTYuMTgzNTkzLTUuOTMzNTk0LTE1Ljk1NzAzMS01LjkzMzU5NC0yMi4xNDA2MjQgMGwtMjM3LjAzNTE1NyAyMjcuMjE4NzVjLTUuMDE1NjI1IDUuMDE1NjI1LTcuODk0NTMxIDExLjkyNTc4MS03Ljg5NDUzMSAxOC45ODgyODEgMCAxNC42OTkyMTkgMTEuOTY4NzUgMjYuNjY3OTY5IDI2LjY2Nzk2OSAyNi42Njc5NjloMzcuMzMyMDMxdjE5MmMwIDIzLjU3MDMxMiAxOS4wOTM3NSA0Mi42NjQwNjIgNDIuNjY3OTY5IDQyLjY2NDA2MmgyOTguNjY0MDYyYzIzLjU3NDIxOSAwIDQyLjY2Nzk2OS0xOS4wOTM3NSA0Mi42Njc5NjktNDIuNjY0MDYydi0xOTJoMzcuMzMyMDMxYzE0LjY5OTIxOSAwIDI2LjY2Nzk2OS0xMS45Njg3NSAyNi42Njc5NjktMjYuNjY3OTY5IDAtNy4wNjI1LTIuODc4OTA2LTEzLjk3MjY1Ni04LjEyODkwNi0xOS4yMjI2NTZ6Ii8+PC9zdmc+);
+    }
+
+    .tabbar button.events {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHBhdGggZmlsbD0iI2M2YzZjNiIgZD0ibTI0LjI2MyAyMjEuOTc1djIyMC43NjdjMCAzNy42MzQgMzAuNjE3IDY4LjI1MSA2OC4yNTEgNjguMjUxaDMyNS45NjVjMzcuNjM0IDAgNjguMjUxLTMwLjYxNyA2OC4yNTEtNjguMjUxdi0yMjAuNzY3eiIvPjxwYXRoIGZpbGw9IiNjNmM2YzYiIGQ9Im00ODYuNzI5IDE4OS45NzV2LTczLjE5OGMtMzcuNjM0IDAtNjguMjUxLTMwLjYxNy02OC4yNTEtNjguMjUxaC0xMC42MDZ2NjQuNTI1YzAgMjYuNDY4LTIxLjUzMiA0OC00OCA0OHMtNDgtMjEuNTMyLTQ4LTQ4di02NC41MjZoLTExMi43NTF2NjQuNTI1YzAgMjYuNDY4LTIxLjUzMiA0OC00OCA0OHMtNDgtMjEuNTMyLTQ4LTQ4di02NC41MjVoLTEwLjYwN2MtMzcuNjM0IDAtNjguMjUxIDMwLjYxNy02OC4yNTEgNjguMjUxdjczLjE5OGg0NjIuNDY2eiIvPjwvc3ZnPg==);
+    }
+
+    .tabbar button.tickets {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHBhdGggZmlsbD0iI2M2YzZjNiIgZD0iTTQ1Ni4zMjUsMTUyLjY2N2wtNTkuOTkyLDU5Ljk5MWMtNS41MjYsNS41MjktMTMuNDYzLDguODQ2LTIyLjE5MSw4Ljg0NmMtOC43MjYsMC0xNi42NjQtMy4zMTctMjIuMTktOC44NDZsLTU5Ljk5MS01OS45OTFjLTguNzQ3LTguNzQ3LTIwLjE1OC0xMi4yMDUtMzEuNDk3LTEyLjIwNWgtNDguNTA4Yy0xMi4xMzYsMC0yMi4wNDQsOS45MDgtMjIuMDQ0LDIyLjA0NHYxNzcuNzczYzAgOC4yNzcsMy40NjYsMTYuMTg5LDEyLjIwNSwyMi4yMTZsNTkuOTkxLDU5Ljk5MWM1LjUyNiw1LjUyOSwxMy40NjMsOC44NDYsMjIuMTksOC44NDZjOC43MjYsMCwxNi42NjQtMy4zMTcsMjIuMTktOC44NDZsNTkuOTkyLTU5Ljk5MWM4Ljc0Ny04Ljc0NywxMi4yMDUtMjAuMTU4LDEyLjIwNS0zMS40OTd2LTQ4LjUwOGMxMi4xMzYsMCwyMi4wNDQsOS45MDgsMjIuMDE0LDIyLjA0NHYxNzcuNzczYzAsMTguNzA2LTE1LjE4NCwzMy44ODktMzMuODksMzMuODg5SDExOC44ODljLTE4LjcwNiwwLTMzLjg4OS0xNS4xODQtMzMuODg5LTMzLjg4OVYxMTguODg5YzAtMTguNzA2LDE1LjE4NC0zMy44ODksMzMuODg5LTMzLjg4OWg1MC42MTRjMTEuMzM5LDAsMjIuNzUtMy40NTgsMzEuNDk3LTEyLjIwNWw1OS45OTEtNTkuOTkxYzUuNTI2LTUuNTI5LDEzLjQ2My04Ljg0NiwyMi4xOS04Ljg0NmM4LjcyNiwwLDE2LjY2NCwzLjMxNywyMi4xOSw4Ljg0Nmw1OS45OTIsNTkuOTkxYzguNzQ3LDguNzQ3LDIwLjE1OCwxMi4yMDUsMzEuNDk3LDEyLjIwNWg1MC42MTRjMTguNzA2LDAsMzMuODg5LDE1LjE4NCwzMy44ODksMzMuODg5di41MDc2QzQ5MC4yMTQsMTM3LjQ4Myw0NzUuMDMsMTUyLjY2Nyw0NTYuMzI1LDE1Mi42Njd6Ii8+PC9zdmc+);
+    }
+
+    .tabbar button.settings {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHBhdGggZmlsbD0iI2M2YzZjNiIgZD0iTTQ5Ni42NTksMzEyLjEwN2wtNDcuMDYxLTM2LjhjMC41OTctNS42NzUsMS4xMDktMTIuMzA5LDEuMTA5LTE5LjMyOGMwLTcuMDE5LTAuNDkxLTEzLjY1My0xLjEwOS0xOS4zMjhsNDcuMTA0LTM2LjgyMSAgICBjOC43NDctNi45MTIsMTEuMTM2LTE5LjE3OSw1LjU2OC0yOS4zOTdMNDUzLjMzMSw4NS43NmMtNS4yMjctOS41NTctMTYuNjgzLTE0LjQ2NC0yOC4zMDktMTAuMTc2bC01NS41MzEsMjIuMjkzICAgIGMtMTAuNjQ1LTcuNjgtMjEuODAzLTE0LjE2NS0zMy4zNDQtMTkuMzQ5bC04LjQ0OC01OC45MDFDMzI2LjMxMiw4LjQ0OCwzMTYuNTg0LDAsMzA1LjA4NiwwaC05OC4xMzMgICAgYy0xMS40OTksMC0yMS4yMDUsOC40NDgtMjIuNTcxLDE5LjQ1NmwtOC40NjksNTkuMTE1Yy0xMS4xNzksNS4wMzUtMjIuMTY1LDExLjQzNS0zMy4yOCwxOS4zNDlsLTU1LjY4LTIyLjM1NyAgICBDNzYuNTIsNzEuNTMxLDY0LjA0LDc2LjA1Myw1OC44NTYsODUuNTY4TDkuODU0LDE3MC4zNDdjLTUuNzgxLDkuNzcxLTMuMzkyLDIyLjQ2NCw1LjU0NywyOS41NDdsNDcuMDYxLDM2LjggICAgYy0wLjc0Nyw3LjE4OS0xLjEwOSwxMy40NC0xLjEwOSwxOS4zMDdzMC4zNjMsMTIuMTE3LDEuMTA5LDE5LjMyOGwtNDcuMTA0LDM2LjgyMWMtOC43NDcsNi45MzMtMTEuMTE1LDE5LjIsNS41NDcsMjkuMzk3ICAgIGw0OC45MzksODQuNjcyYzUuMjI3LDkuNTM2LDE2LjU3NiwxNC40ODUsMjguMzA5LDEwLjE3Nmw1NS41MzEtMjIuMjkzYzEwLjYyNCw3LjY1OSwyMS43ODEsMTQuMTQ0LDMzLjMyMywxOS4zNDlsOC40NDgsNTguODggICAgQzE4NS43NDcsNTAzLjU1MiwxOTUuNDU0LDUxMiwyMDYuOTc0LDUxMmg5OC4xMzNjMTEuNDk5LDAsMjEuMjI3LTguNDQ4LDIyLjU5Mi0xOS40NTZsOC40NjktNTkuMDkzICAgIGMxMS4xNzktNS4wNTYsMjIuMTQ0LTExLjQzNSwzMy4yOC0xOS4zNzFsNTUuNjgsMjIuMzU3YzIuNjg4LDEuMDQ1LDUuNDgzLDEuNTc5LDguMzYzLDEuNTc5YzguMjc3LDAsMTUuODkzLTQuNTIzLDE5LjczMy0xMS41NjMgICAgbDQ5LjE1Mi08NS4xMkM1MDcuODM4LDMzMS4zNDksNTA1LjQ0OCwzMTkuMDgzLDQ5Ni42NTksMzEyLjEwN3ogTTI1Ni4wMTksMzQxLjMzM2MtNDcuMDYxLDAtODUuMzMzLTM4LjI3Mi04NS4zMzMtODUuMzMzICAgIHMzOC4yNzItODUuMzMzLDg1LjMzMy04NS4zMzNzODUuMzMzLDM4LjI3Miw4NS4zMzMsODUuMzMzUzMwMy4wOCwzNDEuMzMzLDI1Ni4wMTksMzQxLjMzM3oiLz48L3N2Zz4=);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="device">
+      <div class="header">
+        <div class="left-side">
+          <h1>Hello, Mark 👋</h1>
+          <span>Where do you want to go today?</span>
+        </div>
+        <div class="avatar"></div>
+      </div>
+
+      <div class="searchbox">
+        <input type="search" placeholder="Search destinations or events" oninput="filterContent()">
+      </div>
+
+      <ul class="filters">
+        <li class="active" onclick="setFilter('Destinations')">Destinations</li>
+        <li onclick="setFilter('Events')">Events</li>
+        <li onclick="setFilter('Tickets')">Tickets</li>
+      </ul>
+
+      <div class="content" id="content">
+        <div class="destination first">
+          <div class="overlay">
+            <div class="content-header">
+              <span>John Doe</span>
+              <div class="rating">4.9</div>
+            </div>
+            <div class="content-info">
+              <span>Cape Town Beach</span>
+              <div class="details">Popular destination</div>
+            </div>
+          </div>
+        </div>
+        <div class="destination second">
+          <div class="overlay">
+            <div class="content-header">
+              <span>Jane Smith</span>
+              <div class="rating">4.7</div>
+            </div>
+            <div class="content-info">
+              <span>Table Mountain</span>
+              <div class="details">Hiking spot</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tabbar">
+        <button class="home active">Home</button>
+        <button class="events">Events</button>
+        <button class="tickets">Tickets</button>
+        <button class="settings">Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentFilter = 'Destinations';
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filters li').forEach(li => {
+        li.classList.remove('active');
+        if (li.textContent === filter) li.classList.add('active');
+      });
+      updateContent();
+    }
+
+    function filterContent() {
+      const query = document.querySelector('.searchbox input').value.toLowerCase();
+      updateContent(query);
+    }
+
+    function updateContent(query = '') {
+      const contentDiv = document.getElementById('content');
+      contentDiv.innerHTML = '';
+
+      const destinations = [
+        { name: 'Cape Town Beach', creator: 'John Doe', rating: 4.9, image: 'first', details: 'Popular destination' },
+        { name: 'Table Mountain', creator: 'Jane Smith', rating: 4.7, image: 'second', details: 'Hiking spot' },
+      ];
+
+      const events = [
+        { name: 'Jazz Festival', creator: 'Event Co.', rating: 4.8, image: 'first', details: '2025-09-15, $50' },
+        { name: 'Food Market', creator: 'Foodies Inc.', rating: 4.6, image: 'second', details: '2025-09-20, $30' },
+      ];
+
+      const tickets = [
+        { name: 'Jazz Festival Ticket', creator: 'Event Co.', rating: 4.8, image: 'first', details: 'Buy for $50' },
+        { name: 'Food Market Ticket', creator: 'Foodies Inc.', rating: 4.6, image: 'second', details: 'Buy for $30' },
+      ];
+
+      let items = [];
+      if (currentFilter === 'Destinations') items = destinations;
+      else if (currentFilter === 'Events') items = events;
+      else if (currentFilter === 'Tickets') items = tickets;
+
+      items = items.filter(item => item.name.toLowerCase().includes(query));
+
+      items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = `${currentFilter.toLowerCase()} ${item.image}`;
+        div.innerHTML = `
+          <div class="overlay">
+            <div class="content-header">
+              <span>${item.creator}</span>
+              <div class="rating">${item.rating}</div>
+            </div>
+            <div class="content-info">
+              <span>${item.name}</span>
+              <div class="details">${item.details}</div>
+            </div>
+          </div>
+        `;
+        contentDiv.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
