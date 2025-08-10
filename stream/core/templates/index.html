@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          
             background: #0a0a0a;
             color: #fff;
             overflow-x: hidden;
@@ -482,6 +483,17 @@
             animation: pulse 2s infinite;
         }
     </style>
+        <style>
+  @font-face {
+    font-family: 'Troy';
+    src: url('{% static 'troy.woff2' %}') format('woff2');
+  
+}
+
+body {
+    font-family: 'Troy', sans-serif;
+}
+</style>
 </head>
 <body>
     <div class="app-container">
